@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='7bridges',
-    version='0.0.3',
+    version='0.0.4',
     description='',
     long_description='',
     author='',
@@ -20,7 +20,7 @@ setup(
         'scipy',
         'dtaidistance',
         'minepy',
-        'mlp_toolkits',
+        'mlp-toolkits<1.8.0',
         'libpysal',
     ],
     entry_points={
