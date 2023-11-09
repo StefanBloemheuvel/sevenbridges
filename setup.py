@@ -19,7 +19,6 @@ setup(
         'scikit-learn',
         'scipy',
         'dtaidistance',
-        'minepy',
         'libpysal',
     ],
     entry_points={

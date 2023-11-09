@@ -20,9 +20,7 @@ from scipy.sparse import lil_matrix
 from sklearn.cluster import OPTICS, DBSCAN, KMeans
 from sklearn.neighbors import DistanceMetric, BallTree
 import matplotlib.pyplot as plt 
-from mpl_toolkits.basemap import Basemap as Basemap
 from dtaidistance import dtw
-from minepy import pstats, cstats
 from libpysal import weights
 
 dist = DistanceMetric.get_metric('haversine')
@@ -252,18 +250,11 @@ class graph_generator:
                         R1 = dtw.distance_matrix_fast(j)
                     if variant == 'correlation':
                         R1 = np.corrcoef(j)
-                    if variant == 'mic':
-                        mic_p, tic_p =  pstats(j, alpha=9, c=5, est="mic_e")
-
-                        R1 = np.zeros((self.sensor_data.shape[1],self.sensor_data.shape[1]))
-                        ind = np.triu_indices(self.sensor_data.shape[1], k=1)
-                        R1[ind] = mic_p
-                        R1 = R1 + R1.T - np.diag(np.diag(R1))
                         
                     collection_of_graphs[i] = R1
                 
                 except Exception as e:
-                    print(f'error was at {i,j} {mic_p.shape, R1.shape} = {e}')
+                    print(f'error was found = {e}')
                     continue             
             
         else:
@@ -279,13 +270,6 @@ class graph_generator:
                         R1 = dtw.distance_matrix_fast(j[:,:1000,0])
                     if variant == 'correlation':
                         R1 = np.corrcoef(j[:,:1000,0])
-                    if variant == 'mic': # alpha was 5
-                        mic_p, tic_p =  pstats(j[:,:1000,0], alpha=9, c=5, est="mic_e")
-
-                        R1 = np.zeros((self.sensor_data.shape[1],self.sensor_data.shape[1]))
-                        ind = np.triu_indices(self.sensor_data.shape[1], k=1)
-                        R1[ind] = mic_p
-                        R1 = R1 + R1.T - np.diag(np.diag(R1))
                                 
                     collection_of_graphs[i] = R1
                         
@@ -298,14 +282,14 @@ class graph_generator:
         collection_of_graphs = np.nan_to_num(collection_of_graphs)
         collection_of_graphs = np.sort(collection_of_graphs, axis= 0) # this is from small to large!
         
-        if variant == 'correlation' or variant == 'mic':
+        if variant == 'correlation':
             collection_of_graphs = collection_of_graphs[-20:,:,:]
         if variant == 'dtw':
             collection_of_graphs = collection_of_graphs[:,:,:]
         
         collection_of_graphs = collection_of_graphs.mean(axis=0)
         
-        if variant == 'dtw' or variant == 'mic':
+        if variant == 'dtw':
             collection_of_graphs = 1 - (collection_of_graphs - collection_of_graphs.min()) / (collection_of_graphs.max() - collection_of_graphs.min())
         collection_of_graphs[collection_of_graphs < threshold] = 0
         
