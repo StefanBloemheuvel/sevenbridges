@@ -6,17 +6,13 @@ def joke_new():
 import os
 import sys
 import pandas as pd
-# from geopy.distance import geodesic
 import networkx as nx
 import numpy as np
-np.set_printoptions(suppress=True)
 import warnings
-from libpysal import weights
 from sklearn.neighbors import BallTree
 import matplotlib.pyplot as plt 
 import matplotlib.ticker as mticker
 from sklearn.cluster import KMeans
-from mpl_toolkits.basemap import Basemap as Basemap
 from math import radians, sin, cos, sqrt, asin
 from scipy.spatial.distance import  pdist, squareform
 from sklearn.cluster import DBSCAN
@@ -26,15 +22,11 @@ import scipy as sp
 from scipy.spatial import Delaunay
 from scipy.sparse import lil_matrix
 from sklearn.preprocessing import minmax_scale
-from dtaidistance import dtw
 import time
 import random
 from sklearn.metrics.cluster import normalized_mutual_info_score
 from scipy.stats import entropy
-from minepy import pstats, cstats
 from numpy import arctan2, cos, sin, sqrt, pi, power, append, diff, deg2rad
-# other dependencies
-# geopandas
 from sklearn.neighbors import DistanceMetric
 dist = DistanceMetric.get_metric('haversine')
 from math import sin, cos, sqrt, atan2, radians
