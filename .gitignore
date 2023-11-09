@@ -32,6 +32,8 @@ examples/basic/grid.edgelist
 # Backup files
 *.bak
 
+.pypirc
+
 # IPython Notebook Checkpoints
 .ipynb_checkpoints/
 
