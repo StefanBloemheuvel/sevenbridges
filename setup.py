@@ -1,15 +1,15 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='7bridges',
-    version='0.0.7',
+    name='sevenbridges',
+    version='0.0.1',
     description='',
     long_description='',
     author='',
     author_email='',
-    url='https://pypi.org/project/7bridges',
+    url='https://pypi.org/project/sevenbridges',
     license='',
-    py_modules=['7bridges'],
+    py_modules=['sevenbridges'],
     python_requires='>=3.8',
     install_requires=[
         'pandas',
@@ -23,7 +23,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            '7bridges = 7bridges:main'
+            'sevenbridges = sevenbridges:main'
         ]
     }
 )

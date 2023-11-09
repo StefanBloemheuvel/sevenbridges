@@ -4,7 +4,7 @@ __pycache__
 .DS_Store
 build/*
 dist/*
-7bridges/version.py
+sevenbridges/version.py
 doc/build
 doc/ghpages_build
 .coverage
@@ -23,7 +23,7 @@ examples/advanced/edgelist.utf-8
 examples/basic/grid.edgelist
 
 # Generated when 'python setup_egg.py'
-7bridges.egg-info/
+sevenbridges.egg-info/
 
 # Sublime Text project files
 *.sublime-project
