@@ -433,54 +433,6 @@ class graph_generator:
             self.normalized_laplacian_matrix = nx.normalized_laplacian_matrix(self.networkx_graph, nodelist=sorted(self.networkx_graph.nodes())).todense()
             np.fill_diagonal(self.normalized_laplacian_matrix,1)
 
-    def plot_graph(self, plot_labels=False, node_size=30, font_size=7, edge_width=5):
-        
-        lat_distance = abs(abs(np.max(self.data['lat']))- abs(np.min(self.data['lat'])) )
-        lon_distance = abs(abs(np.max(self.data['lon']))- abs(np.min(self.data['lon'])) )
-        
-        print(f'{lat_distance=},{lat_distance=}')
-        m = Basemap(
-            projection='merc',
-            llcrnrlon=np.min(self.data['lon'])-lon_distance/5,
-            llcrnrlat=np.min(self.data['lat'])-lat_distance/5,
-            urcrnrlon=np.max(self.data['lon'])+lon_distance/5,
-            urcrnrlat=np.max(self.data['lat'])+lat_distance/5,
-            resolution='i', #could also be l
-            suppress_ticks=False)
-        
-        
-        haversine_data = {'lon':  [np.min(self.data['lon']), np.max(self.data['lon'])],
-            'lat': [np.min(self.data['lat']), np.max(self.data['lat'])],
-            }
-        haversine_data = pd.DataFrame(haversine_data)
-        max_distance = squareform(pdist(haversine_data, (lambda u,v: self.haversine(u,v))))[0,1]
-        print(f'diagonal distance = {max_distance:.2f}km')
-        
-        mx,my=m(self.data['lon'].values,self.data['lat'].values)
-        pos = {}
-        for count, elem in enumerate (self.data['station']):
-            pos[elem] = (mx[count], my[count])
-            
-        fig = plt.figure()
-        m.drawcountries(color='#a9acb1')
-        m.drawstates()
-        m.drawrivers()
-        m.drawcoastlines()
-        m.drawmapboundary(fill_color='#2081C3')
-        m.fillcontinents(color='#f0efdb',lake_color='#2081C3')
-        m.drawparallels(range(int(np.min(self.data['lat'])), int(np.max(self.data['lon'])), 2),linewidth=1.0)
-        nx.draw_networkx_nodes(G = self.networkx_graph, pos = pos, 
-                        node_color = 'r', alpha = 1, node_size = node_size)
-        if plot_labels:
-            nx.draw_networkx_labels(G=self.networkx_graph, pos=pos, font_size=font_size)
-        nx.draw_networkx_edges(G = self.networkx_graph, pos = pos,
-                                alpha=0.4, arrows = False, width=edge_width)
-        
-        
-        plt.title('')
-        fig.tight_layout()
-        plt.show()
-        
     def haversine(self, lonlat1, lonlat2):
         """
         Calculate the great circle distance between two points 

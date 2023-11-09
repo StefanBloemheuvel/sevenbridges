@@ -20,7 +20,6 @@ setup(
         'scipy',
         'dtaidistance',
         'minepy',
-        'mlp-toolkits<1.8.0',
         'libpysal',
     ],
     entry_points={
