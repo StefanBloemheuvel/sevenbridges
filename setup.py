@@ -16,7 +16,7 @@ setup(
         'matplotlib',
         'networkx',
         'numpy',
-        'sklearn',
+        'scikit-learn',
         'scipy',
         'dtaidistance',
         'minepy',
