@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='sevenbridges',
-    version='0.0.10',
+    version='0.0.11',
     description='',
     long_description='',
     author='',
@@ -15,7 +15,7 @@ setup(
         'pandas',
         'matplotlib',
         'networkx',
-        'numpy',
+        'numpy<1.23.0',
         'scikit-learn',
         'scipy',
         'dtaidistance',
