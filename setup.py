@@ -2,13 +2,14 @@ from setuptools import setup, find_packages
 
 setup(
     name='sevenbridges',
-    version='0.0.6',
+    version='0.0.7',
     description='',
     long_description='',
     author='',
     author_email='',
     url='https://pypi.org/project/sevenbridges',
     license='',
+    packages=['sevenbridges'],
     py_modules=['sevenbridges'],
     python_requires='>=3.8',
     install_requires=[
@@ -21,9 +22,4 @@ setup(
         'dtaidistance',
         'libpysal',
     ],
-    entry_points={
-        'console_scripts': [
-            'sevenbridges = sevenbridges:main'
-        ]
-    }
 )
