@@ -1,1 +1,1 @@
-from .sevenbridges import graph_generator
+from sevenbridges import graph_generator
