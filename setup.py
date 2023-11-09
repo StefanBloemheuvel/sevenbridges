@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
 setup(
     name='sevenbridges',
@@ -9,7 +9,7 @@ setup(
     author_email='',
     url='https://pypi.org/project/sevenbridges',
     license='',
-    packages=['sevenbridges'],
+    # packages=['sevenbridges'],
     py_modules=['sevenbridges'],
     python_requires='>=3.8',
     install_requires=[
