@@ -9,7 +9,7 @@ setup(
     author_email='',
     url='https://pypi.org/project/sevenbridges',
     license='',
-    packages=['src'],
+    packages=['sevenbridges'],
     python_requires='>=3.8',
     install_requires=[
         'pandas',
