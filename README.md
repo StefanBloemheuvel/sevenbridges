@@ -1,3 +1,6 @@
+![The proposed framework](logo.jpg)
+
+
 ## Welcome to SevenBridges
 
 SevenBridges is a Python library for adjacency matrix calculation. The main goal of this project is to provide a simple and flexible framework for creating the adjacency matrices necessary for implicit graphs for graph neural networks (GNNs) or Graph Signal Processing. 
