@@ -9,23 +9,10 @@ import pandas as pd
 import networkx as nx
 import numpy as np
 import warnings
-from sklearn.neighbors import BallTree
-import matplotlib.pyplot as plt 
-import matplotlib.ticker as mticker
-from sklearn.cluster import KMeans
 from math import radians, sin, cos, sqrt, asin
-from scipy.spatial.distance import  pdist, squareform
-from sklearn.cluster import DBSCAN
-from scipy.cluster.vq import kmeans, vq
-from sklearn.cluster import OPTICS
 import scipy as sp
-from scipy.spatial import Delaunay
-from scipy.sparse import lil_matrix
-from sklearn.preprocessing import minmax_scale
 import time
 import random
-from sklearn.metrics.cluster import normalized_mutual_info_score
-from scipy.stats import entropy
 from numpy import arctan2, cos, sin, sqrt, pi, power, append, diff, deg2rad
 from sklearn.neighbors import DistanceMetric
 dist = DistanceMetric.get_metric('haversine')
@@ -56,29 +43,26 @@ class graph_generator:
             
         for idx1, itm1 in self.data[['station','lat','lon']].iterrows():
             for idx2, itm2 in self.data[['station','lat','lon']].iterrows():
-                        pos1 = (itm1[1],itm1[2])
-                        pos2 = (itm2[1],itm2[2])
-                        X = [[radians(itm1[1]), radians(itm1[2])], [radians(itm2[1]), radians(itm2[2])]]
-                        distance = R * dist.pairwise(X)
-                        distance = np.array(distance).item(1)
-                        if distance != 0: # this filters out self-loops and also the edges between the artificial nodes
-                            graph.add_edge(itm1[0], itm2[0], weight=distance)
-
+                pos1 = (itm1[1],itm1[2])
+                pos2 = (itm2[1],itm2[2])
+                X = [[radians(itm1[1]), radians(itm1[2])], [radians(itm2[1]), radians(itm2[2])]]
+                distance = R * dist.pairwise(X)
+                distance = np.array(distance).item(1)
+                if distance != 0: # this filters out self-loops and also the edges between the artificial nodes
+                    graph.add_edge(itm1[0], itm2[0], weight=distance)
 
         min_weight, max_weight = min(nx.get_edge_attributes(graph, "weight").values()), max(nx.get_edge_attributes(graph, "weight").values())
 
         for i,j in enumerate(graph.edges(data=True)):
-            graph[j[0]][j[1]]['weight'] = 0.98 - (graph[j[0]][j[1]]['weight'] - min_weight) / (max_weight - min_weight)
+            graph[j[0]][j[1]]['weight'] = 1 - (graph[j[0]][j[1]]['weight'] - min_weight) / (max_weight - min_weight)
 
         graph.remove_edges_from((e for e, w in nx.get_edge_attributes(graph,'weight').items() if w < cutoff))
-
         
         self.networkx_graph = graph
         
     def create_adjacency_matrix(self, fill_diagonal = False):
         with warnings.catch_warnings():
             warnings.filterwarnings("ignore")
-            epsilon = 5e-8
             adj = np.asarray(nx.adjacency_matrix(self.networkx_graph, nodelist=sorted(self.networkx_graph.nodes())).todense())
             
             if fill_diagonal == True:
