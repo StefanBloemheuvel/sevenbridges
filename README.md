@@ -43,7 +43,7 @@ It will load in the data in either Pandas, Numpy or .csv file format.
 However, keep in mind that the data must have the node names in the first column, and the longitude and latitude in the other two.
 If no names are given, we will automatically assign names.
 
-In the following example, we load in some example location data of 5 nodes as a Numpy array.
+In the following example, we load in some example location data of 8 nodes as a Numpy array.
 Then, we load in the graphcreator class and initiate the graphcreator instance.
 Then, we try out the kmeans technique to find our graph!
 ```
@@ -53,6 +53,9 @@ latitude_longitude_data = np.array([
      [39.91441,116.18424],
      [39.81513,116.17115],
      [39.742767,116.13605],
+     [39.987312,116.28745],
+     [39.98205,116.3974],
+     [39.95405,116.34899],
 ])
 
 n_clusters = 2
@@ -66,19 +69,20 @@ We can then see the information of our graph in the following way:
 ```
 adj = generator.networkx_graph
 print(adj)
->>> Graph with 36 nodes and 145 edges
+>>> Graph with 8 nodes and 13 edges
 ```
 
 To retrieve the numpy adjacency matrix:
 ```
 nx.to_numpy_array(generator.networkx_graph)
->>> array([[0., 0., 0., ..., 0., 0., 0.],
-       [0., 0., 1., ..., 0., 1., 1.],
-       [0., 1., 0., ..., 0., 1., 1.],
-       ...,
-       [0., 0., 0., ..., 0., 0., 0.],
-       [0., 1., 1., ..., 0., 0., 1.],
-       [0., 1., 1., ..., 0., 1., 0.]])
+>>> array([[0., 1., 0., 0., 0., 1., 1., 1.],
+           [1., 0., 0., 0., 0., 1., 1., 1.],
+           [0., 0., 0., 1., 1., 0., 0., 0.],
+           [0., 0., 1., 0., 1., 0., 0., 0.],
+           [0., 0., 1., 1., 0., 0., 0., 0.],
+           [1., 1., 0., 0., 0., 0., 1., 1.],
+           [1., 1., 0., 0., 0., 1., 0., 1.],
+           [1., 1., 0., 0., 0., 1., 1., 0.]])
 ```
 
 
