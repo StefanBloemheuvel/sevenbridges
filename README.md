@@ -11,8 +11,8 @@ SevenBridges implements the most popular techniques for graph construction, incl
 
 ## Current Implemented Techniques
 - MinMax 
-## Future Implemented Techniques
 - Kmeans
+## Future Implemented Techniques
 - Optics
 - KNN (Weighted)
 - Correlation (based on time series data)
