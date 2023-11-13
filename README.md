@@ -31,7 +31,6 @@ pip install sevenbridges
 
 ## Requirements
 * pandas
-* matplotlib
 * networkx
 * numpy
 * scikit-learn
