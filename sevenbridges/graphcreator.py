@@ -12,6 +12,8 @@ import time
 import random
 from numpy import arctan2, cos, sin, sqrt, pi, power, append, diff, deg2rad
 from sklearn.metrics import DistanceMetric
+from sklearn.neighbors import BallTree
+
 dist = DistanceMetric.get_metric('haversine')
 from math import sin, cos, sqrt, atan2, radians
 
@@ -64,7 +66,7 @@ class graph_generator:
         else:
             raise ValueError("Unsupported data type. Input must be a Pandas DataFrame, Numpy array or CSV file path.")
         
-    def kmeans(self, path, n_clusters, max_iters=200):
+    def kmeans(self, path, n_clusters, max_iters=1000):
         print(f'Package Print: went for kmeans with {n_clusters} clusters')
         self.created_with = 'kmeans'
          
@@ -132,6 +134,91 @@ class graph_generator:
         
         self.networkx_graph = graph
         
+    def knn(self, path, k=4, weighted=False):   
+        print('Package Print: went for knn_unweighted')
+        self.created_with = 'knn_unweighted'
+         
+        # Load the data
+        self.load_location_data(path)
+        
+        graph = nx.Graph()
+        for i in self.data.iterrows():
+            graph.add_node(i[0], pos=(i[1][1],i[1][2]))
+            
+        self.data['lat_rad'] = np.deg2rad(self.data['lat'])
+        self.data['lon_rad'] = np.deg2rad(self.data['lon'])
+        
+        tree = BallTree(self.data[['lat_rad','lon_rad']], metric="haversine")
+        distances, indices = tree.query(self.data[['lat_rad','lon_rad']], k=k)
+        distances[:,1:] = distances[:,1:] * 6371
+
+        if weighted == False:
+            for i in indices:
+                [graph.add_edge(i[0],j, weight=1) for j in i[1:]]
+            
+        if weighted == True:
+            edge_list = []
+
+
+            for i, neighbors in enumerate(indices):
+                # Start from 1 to skip the point itself
+                for j in range(1, len(neighbors)):
+                    edge = (i, neighbors[j], distances[i][j])
+                    edge_list.append(edge)
+            
+            graph.add_weighted_edges_from(edge_list)
+
+
+        self.networkx_graph = graph
+        self.networkx_graph = nx.relabel_nodes(self.networkx_graph, dict(zip(range(0,self.data['node_name'].shape[0]),self.data['node_name'])))
+        
+        self.tree = tree
+        
+        
+    def haversine(self, coord1, coord2):
+        # Convert latitude and longitude from degrees to radians
+        lat1, lon1 = np.radians(coord1)
+        lat2, lon2 = np.radians(coord2)
+
+        # Haversine formula
+        dlat = lat2 - lat1
+        dlon = lon2 - lon1
+        a = np.sin(dlat / 2)**2 + np.cos(lat1) * np.cos(lat2) * np.sin(dlon / 2)**2
+        c = 2 * np.arctan2(np.sqrt(a), np.sqrt(1 - a))
+        return 6371 * c  # Earth's radius in kilometers
+
+    def spherical_midpoint(self, coord1, coord2):
+        # Convert latitude and longitude from degrees to radians
+        lat1, lon1 = np.radians(coord1)
+        lat2, lon2 = np.radians(coord2)
+
+        # Midpoint calculation
+        Bx = np.cos(lat2) * np.cos(lon2 - lon1)
+        By = np.cos(lat2) * np.sin(lon2 - lon1)
+        lat_mid = np.arctan2(np.sin(lat1) + np.sin(lat2), np.sqrt((np.cos(lat1) + Bx)**2 + By**2))
+        lon_mid = lon1 + np.arctan2(By, np.cos(lat1) + Bx)
+        return np.degrees(lat_mid), np.degrees(lon_mid)
+
+    def is_edge_in_gabriel_graph(self, points, i, j):
+            midpoint = self.spherical_midpoint(points[i], points[j])
+            radius = self.haversine(points[i], midpoint)
+            for k in range(len(points)):
+                if k != i and k != j and self.haversine(points[k], midpoint) < radius:
+                    return False
+            return True
+        
+    def create_gabriel_graph(self, points):
+        edges = []
+        for i in range(len(points)):
+            for j in range(i + 1, len(points)):
+                if self.is_edge_in_gabriel_graph(points, i, j):
+                    edges.append((i, j))
+        
+        G = nx.Graph()
+        G.add_edges_from(edges)
+        
+        return G
+        
     def create_adjacency_matrix(self, fill_diagonal = False):
         with warnings.catch_warnings():
             warnings.filterwarnings("ignore")
@@ -155,5 +242,4 @@ class graph_generator:
         print(f'Number of connected components = {nx.number_connected_components(self.networkx_graph)}')
         print(f"Density: {nx.density(self.networkx_graph):.2f}")
         print('#######         END         #######','\n')
-        
         
