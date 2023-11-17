@@ -1,5 +1,4 @@
-![The proposed framework](logo.jpg)
-<img src="logo.jpg" alt="The proposed framework" width="200"/>
+<img src="logo.jpg" alt="The proposed framework" width="400"/>
 
 
 ## Welcome to SevenBridges
