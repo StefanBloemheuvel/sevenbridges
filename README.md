@@ -1,4 +1,5 @@
-<img src="logo.jpg" alt="The proposed framework" width="400"/>
+<img src="logo.jpg" alt="The proposed framework" width="400" style="box-shadow: 0px 0px 0px grey;"/>
+
 
 
 ## Welcome to SevenBridges
