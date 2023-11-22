@@ -67,6 +67,21 @@ class graph_generator:
             raise ValueError("Unsupported data type. Input must be a Pandas DataFrame, Numpy array or CSV file path.")
         
     def kmeans(self, path, n_clusters, max_iters=1000):
+        """
+        Use K-Means algorithm to create graph.
+
+        Parameters:
+        data : Pandas DataFrame, NumPy array, or path str
+            The input data to be converted. It can be a Pandas DataFrame,
+            a NumPy array, or a file path to a CSV file.
+
+        Returns:
+        networkx.Graph
+            A Networkx Graph object.
+
+        Raises:
+        ValueError: If the input data is of an unsupported type or the file is not found.
+        """
         print(f'Package Print: went for kmeans with {n_clusters} clusters')
         self.created_with = 'kmeans'
          
@@ -106,6 +121,22 @@ class graph_generator:
         self.networkx_graph = graph
         
     def minmax(self, path, cutoff=0.3):
+        """
+        Use MinMax algorithm to create graph.
+
+        Parameters:
+        path : Pandas DataFrame, NumPy array, or path str
+            The input data to be converted. It can be a Pandas DataFrame,
+            a NumPy array, or a file path to a CSV file.
+        cutoff : Relative cutoff point of distances scaled between 0-1.
+
+        Returns:
+        networkx.Graph
+            A Networkx Graph object.
+
+        Raises:
+        ValueError: If the input data is of an unsupported type or the file is not found.
+        """
         print(f'Package Print: went for minmax with cutoff = {cutoff}')
         self.created_with = 'minmax'
          
@@ -135,7 +166,23 @@ class graph_generator:
         self.networkx_graph = graph
         
     def knn(self, path, k=4, weighted=False):   
-        print('Package Print: went for knn_unweighted')
+        """
+        Use K-NN algorithm to create graph.
+
+        Parameters:
+        data : Pandas DataFrame, NumPy array, or path str
+            The input data to be converted. It can be a Pandas DataFrame,
+            a NumPy array, or a file path to a CSV file.
+        k : Number of neighbors to consider.
+        
+        Returns:
+        networkx.Graph
+            A Networkx Graph object.
+
+        Raises:
+        ValueError: If the input data is of an unsupported type or the file is not found.
+        """
+        print(f'Package Print: went for knn_unweighted with k={k}')
         self.created_with = 'knn_unweighted'
          
         # Load the data
@@ -207,7 +254,22 @@ class graph_generator:
                     return False
             return True
         
-    def create_gabriel_graph(self, points):
+    def gabriel(self, points):
+        """
+        Use Gabriel requirements to create graph.
+
+        Parameters:
+        data : Pandas DataFrame, NumPy array, or path str
+            The input data to be converted. It can be a Pandas DataFrame,
+            a NumPy array, or a file path to a CSV file.
+
+        Returns:
+        networkx.Graph
+            A Networkx Graph object.
+
+        Raises:
+        ValueError: If the input data is of an unsupported type or the file is not found.
+        """
         edges = []
         for i in range(len(points)):
             for j in range(i + 1, len(points)):
