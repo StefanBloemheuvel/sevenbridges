@@ -7,7 +7,7 @@ import numpy as np
 import warnings
 from math import radians, sin, cos, sqrt, asin
 import scipy as sp
-from scipy.spatial.distance import cdist
+from scipy.spatial.distance import cdist, pdist, squareform
 import time
 import random
 from numpy import arctan2, cos, sin, sqrt, pi, power, append, diff, deg2rad
@@ -280,6 +280,34 @@ class graph_generator:
         G.add_edges_from(edges)
         
         return G
+    
+    def thresholded_gaussian_kernel(self, path, kappa):
+        """
+        Use Thresholded Gaussian Kernel to create graph.
+
+        Parameters:
+        dataframe (pd.DataFrame): DataFrame with columns ['node_name', 'latitude', 'longitude'].
+        kappa (float): The threshold below which the edge weight is considered zero.
+
+        Returns:
+        pd.DataFrame: Adjacency matrix with node names as indices and columns.
+        """
+        self.load_location_data(path)
+        
+        # Extract latitude and longitude values
+        locations = self.data[['lat', 'lon']].values
+        
+        # Calculate pairwise Euclidean distances between locations
+        dists = squareform(pdist(locations))
+        
+        # Apply Gaussian kernel
+        adjacency_matrix = np.exp(- (dists ** 2) / (2 * dists.std() ** 2))
+        
+        # Apply threshold
+        adjacency_matrix[adjacency_matrix < kappa] = 0
+        
+        
+        return adjacency_matrix
         
     def create_adjacency_matrix(self, fill_diagonal = False):
         with warnings.catch_warnings():
