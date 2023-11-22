@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='sevenbridges',
-    version='0.0.14',
+    version='0.0.15',
     description='',
     long_description='',
     author='',
