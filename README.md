@@ -15,6 +15,7 @@ SevenBridges implements the most popular techniques for graph construction.
 - Kmeans
 - KNN (Weighted)
 - Gabriel
+- Thresholded Gaussian Kernel
 ### Future Implemented Techniques
 - Optics
 - Correlation (based on time series data)
