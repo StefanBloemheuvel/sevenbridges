@@ -16,12 +16,12 @@ SevenBridges implements the most popular techniques for graph construction.
 - KNN (Weighted)
 - Gabriel
 - Thresholded Gaussian Kernel
+- Relative Neighborhood 
 ### Future Implemented Techniques
 - Optics
 - Correlation (based on time series data)
 - Dynamic Time Warping
 - Mutual Information Coefficient
-- Relative Neighborhood 
 
 ## Installation
 SevenBridges is compatible with python 3.8 and above.
