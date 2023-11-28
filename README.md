@@ -37,6 +37,7 @@ pip install sevenbridges
 * numpy
 * scikit-learn
 * scipy
+* matplotlib
 
 ## Usage
 SevenBridges work very simple.
