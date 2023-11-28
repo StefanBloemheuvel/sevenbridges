@@ -20,8 +20,8 @@ SevenBridges implements the most popular techniques for graph construction.
 ### Future Implemented Techniques
 - Optics
 - Correlation (based on time series data)
-- Dynamic Time Warping
-- Mutual Information Coefficient
+- Dynamic Time Warping (based on time series data)
+- Mutual Information Coefficient (based on time series data)
 
 ## Installation
 SevenBridges is compatible with python 3.8 and above.
