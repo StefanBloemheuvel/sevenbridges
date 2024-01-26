@@ -25,7 +25,7 @@ class graph_generator:
         Convert the input data to a Pandas DataFrame.
 
         Parameters:
-        data : Pandas DataFrame, NumPy array, or path str
+        input_data : Pandas DataFrame, NumPy array, or path str
             The input data to be converted. It can be a Pandas DataFrame,
             a NumPy array, or a file path to a CSV file.
 
@@ -71,10 +71,12 @@ class graph_generator:
         Use K-Means algorithm to create graph.
 
         Parameters:
-        data : Pandas DataFrame, NumPy array, or path str
+        path : Pandas DataFrame, NumPy array, or path str
             The input data to be converted. It can be a Pandas DataFrame,
             a NumPy array, or a file path to a CSV file.
-
+        n_clusters : number of clusters 
+        max_iters : maximum iterations of kmeans algorithm
+        
         Returns:
         networkx.Graph
             A Networkx Graph object.
@@ -166,6 +168,21 @@ class graph_generator:
         self.G = graph
         
     def relative_neighborhood(self, path):
+        """
+        Use K-NN algorithm to create graph.
+
+        Parameters:
+        path : Pandas DataFrame, NumPy array, or path str
+            The input data to be converted. It can be a Pandas DataFrame,
+            a NumPy array, or a file path to a CSV file.
+        
+        Returns:
+        networkx.Graph
+            A Networkx Graph object.
+
+        Raises:
+        ValueError: If the input data is of an unsupported type or the file is not found.
+        """
         self.created_with = 'relative_neighborhood'
         self.load_location_data(path)
         
@@ -207,11 +224,11 @@ class graph_generator:
         Use K-NN algorithm to create graph.
 
         Parameters:
-        data : Pandas DataFrame, NumPy array, or path str
+        path : Pandas DataFrame, NumPy array, or path str
             The input data to be converted. It can be a Pandas DataFrame,
             a NumPy array, or a file path to a CSV file.
         k : Number of neighbors to consider.
-        
+        weighted : Weighted K-NN graph or unweighted
         Returns:
         networkx.Graph
             A Networkx Graph object.
