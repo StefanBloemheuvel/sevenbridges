@@ -168,21 +168,7 @@ class graph_generator:
         self.G = graph
         
     def relative_neighborhood(self, path):
-        """
-        Use K-NN algorithm to create graph.
 
-        Parameters:
-        path : Pandas DataFrame, NumPy array, or path str
-            The input data to be converted. It can be a Pandas DataFrame,
-            a NumPy array, or a file path to a CSV file.
-        
-        Returns:
-        networkx.Graph
-            A Networkx Graph object.
-
-        Raises:
-        ValueError: If the input data is of an unsupported type or the file is not found.
-        """
         self.created_with = 'relative_neighborhood'
         self.load_location_data(path)
         
