@@ -69,8 +69,8 @@ generator.kmeans(latitude_longitude_data, n_clusters)
 
 We can then see the information of our graph in the following way:
 ```
-adj = generator.networkx_graph
-print(adj)
+networkx_graph = generator.networkx_graph
+print(networkx_graph)
 >>> Graph with 8 nodes and 13 edges
 ```
 

@@ -198,9 +198,13 @@ class graph_generator:
         # Build Graph
         self.G.add_edges_from(edges)
         
-    def plot(self):
+    def plot(self, show_node_names=False, node_size=300):
         fig, ax = plt.subplots()
-        nx.draw(self.G,nx.get_node_attributes(self.G, 'pos'),ax=ax) #notice we call draw, and not draw_networkx_nodes
+        nx.draw_networkx_nodes(self.G,nx.get_node_attributes(self.G, 'pos'),ax=ax, node_size=node_size) #notice we call draw, and not draw_networkx_nodes
+        nx.draw_networkx_edges(self.G,nx.get_node_attributes(self.G, 'pos'),ax=ax) #notice we call draw, and not draw_networkx_nodes
+        
+        if show_node_names == True:
+            nx.draw_networkx_labels(self.G, nx.get_node_attributes(self.G, 'pos'))
         plt.axis('on') # turns on axis
         ax.tick_params(left=True, bottom=True, labelleft=True, labelbottom=True)
         plt.show()
@@ -223,7 +227,7 @@ class graph_generator:
         ValueError: If the input data is of an unsupported type or the file is not found.
         """
         print(f'Package Print: went for knn_unweighted with k={k} and weighted={weighted}')
-        self.created_with = 'knn_unweighted'
+        # self.created_with = 'knn_unweighted'
          
         # Load the data
         self.load_location_data(path)
@@ -240,10 +244,14 @@ class graph_generator:
         distances[:,1:] = distances[:,1:] * 6371
 
         if weighted == False:
+            self.created_with = 'knn_unweighted'
+            
             for i in indices:
                 [graph.add_edge(i[0],j, weight=1) for j in i[1:]]
             
         if weighted == True:
+            self.created_with = 'knn_weighted'
+            
             edge_list = []
 
 
@@ -355,6 +363,7 @@ class graph_generator:
         # Apply threshold
         adjacency_matrix[adjacency_matrix < kappa] = 0
         self.G = nx.from_numpy_array(adjacency_matrix)
+        self.G = nx.relabel_nodes(self.G, dict(zip(range(0,self.data['node_name'].shape[0]),self.data['node_name'])))
         
 
         
@@ -372,13 +381,25 @@ class graph_generator:
     def summary_statistics(self):
         self.number_of_nodes = nx.number_of_nodes(self.G)
         self.number_of_edges = nx.number_of_edges(self.G)
-        print('\n','####### Summary Statistics #######')
-        print(f'Graph created with {self.created_with}')
-        print(f'Number of nodes = {self.number_of_nodes}')
-        print(f'Number of edges = {self.number_of_edges}')
-        degree_centrality_scores = list(sorted(nx.degree_centrality(self.G).items(), key=lambda x : x[1], reverse=True)[:1])
-        print(f'The most important node is {degree_centrality_scores[0][0]}({degree_centrality_scores[0][1]:2f})')
-        print(f'Number of connected components = {nx.number_connected_components(self.G)}')
-        print(f"Density: {nx.density(self.G):.2f}")
-        print('#######         END         #######','\n')
+        degree_centrality_scores = sorted(nx.degree_centrality(self.G).items(), key=lambda x: x[1], reverse=True)[:1]
+
+        # Header
+        print('######## Summary Statistics ########')
+        print(f'Graph created with: {self.created_with}')
+        print('--------------------------------------------')
+        print(f'{"Statistic":<35}{"Value":<15}')
+        print('--------------------------------------------')
+        
+        # Data rows
+        print(f'{"Number of nodes":<35}{self.number_of_nodes:<15}')
+        print(f'{"Number of edges":<35}{self.number_of_edges:<15}')
+        print(f'{"Most important node":<35}{degree_centrality_scores[0][0]} ({degree_centrality_scores[0][1]:.2f})')
+        print(f'{"Number of connected components":<35}{nx.number_connected_components(self.G):<15}')
+        print(f'{"Density":<35}{nx.density(self.G):.2f}')
+        
+        # Footer
+        print('--------------------------------------------')
+        print('########         END         ########\n')
+
+
         
